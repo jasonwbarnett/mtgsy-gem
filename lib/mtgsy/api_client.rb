@@ -6,6 +6,7 @@ module Mtgsy
     def initialize(options = {})
       @agent        = Mechanize.new
       @api_endpoint = "https://www.mtgsy.net/dns/api.php"
+      @record_types = [ 'A', 'AAAA', 'CNAME', 'HINFO', 'MX', 'NS', 'PTR', 'RP', 'SRV', 'TXT' ]
 
       @debug        = options[:debug] ? options[:debug] : false
 
@@ -16,7 +17,7 @@ module Mtgsy
       @aux = 0
 
       # attr_writer
-      @password   = options[:password]   ? options[:password]   : nil
+      @password     = options[:password]   ? options[:password]   : nil
     end
 
     attr_accessor :domainname, :username, :aux, :ttl
@@ -67,17 +68,19 @@ module Mtgsy
 
       @records = @agent.page.body.split('<br>')
       @records.pop
-      @records
+      @records.collect { |i| i.split(",") }
     end
 
     def records
       @records || self.refresh!
     end
 
+    def record_types?
+      @record_types
+    end
+
     private
       def post_to_mtgsy(params)
-        post_data = []
-
         command = params[Mtgsy::COMMAND]
         name    = params[Mtgsy::NAME]
         type    = params[Mtgsy::TYPE]
@@ -85,6 +88,7 @@ module Mtgsy
         aux     = params[Mtgsy::AUX]
         data    = params[Mtgsy::TTL]
 
+        post_data = []
         post_data << [ 'command'    ,command ]     if command
         post_data << [ 'username'   ,@username ]   if @username
         post_data << [ 'password'   ,@password ]   if @password
