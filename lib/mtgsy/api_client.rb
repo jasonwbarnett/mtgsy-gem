@@ -68,7 +68,7 @@ module Mtgsy
 
       @records_ALL = @agent.page.body.split('<br>')
       @records_ALL.pop
-      @records_ALL.collect { |i| i.split(",") }
+      @records_ALL.collect! { |i| i.split(",") }
 
 
       @record_types.each do |x|
@@ -83,7 +83,7 @@ module Mtgsy
     def records(type="ALL")
       self.refresh! unless @records
 
-      puts eval("@records_#{type}")
+      eval("@records_#{type}")
     end
 
     def record_types?
