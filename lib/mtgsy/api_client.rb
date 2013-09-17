@@ -7,6 +7,8 @@ module Mtgsy
       @agent        = Mechanize.new
       @api_endpoint = "https://www.mtgsy.net/dns/api.php"
 
+      @debug        = options[:debug] ? options[:debug] : false
+
       # attr_accessor
       @domainname = options[:domainname] ? options[:domainname] : nil
       @username   = options[:username]   ? options[:username]   : nil
@@ -79,6 +81,8 @@ module Mtgsy
         post_data << [ 'data'       ,data ]        if data
         post_data << [ 'aux'        ,aux ]         if aux
         post_data << [ 'ttl'        ,ttl ]         if ttl
+
+        p post_data if @debug
 
         @agent.post(@api_endpoint, [
           post_data
