@@ -61,6 +61,19 @@ module Mtgsy
       what_happened?(@agent, command)
     end
 
+    def refresh!
+      command = "listrecords"
+      post_to_mtgsy([ command ])
+
+      @records = @agent.page.body.split('<br>')
+      @records.pop
+      @records
+    end
+
+    def records
+      @records || self.refresh!
+    end
+
     private
       def post_to_mtgsy(params)
         post_data = []
@@ -92,11 +105,7 @@ module Mtgsy
 
         case mtgsy_return_code
         when 800
-          if command =~ /update|delete/
             puts "OK"
-          else
-            puts "Created"
-          end
         when 400
           $stderr.puts "No domain name specified"
         when 100
@@ -110,7 +119,6 @@ module Mtgsy
         when 200
           $stderr.puts "Insufficcient information supplied"
         end
-
       end
   end
 end
