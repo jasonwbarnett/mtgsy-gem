@@ -83,9 +83,12 @@ module Mtgsy
         end
         instance_variable_set("@records_#{x}", tmp_placeholder)
       end
+
+      nil
     end
 
     def records(type="ALL")
+      type.upcase!
       self.refresh! unless @records_ALL
 
       eval("@records_#{type}")
