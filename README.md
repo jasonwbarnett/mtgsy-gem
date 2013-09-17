@@ -18,8 +18,30 @@ Or install it yourself as:
 
 ## Usage
 
+    ## Start things off...
     client = Mtgsy::ApiClient.new(username: "my_username", password: "my_password", domainname: "mydomain.com")
-    client.add_record(name: "www", type: "A", data: "127.0.0.1", aux: "0", ttl: "3600")
+
+    ## Add records
+    client.add_record(name: "www1", type: "A", data: "127.0.0.1")
+    client.add_record(name: "www2", type: "A", data: "127.0.0.2", ttl: "3600")
+    client.add_record(name: "www3", type: "A", data: "127.0.0.3", ttl: "3600", aux: "5")
+
+    ## Update records
+    client.update_record(name: "www1", type: "A", data: "127.0.0.11")
+
+    ## Delete records:
+    client.delete_record(name: "www1")
+    client.delete_record(name: "www2")
+    client.delete_record(name: "www3")
+
+    ## List all records in a zone:
+    client.records("ALL")    # Returns an array of _all_ records in the zone
+    client.records("A")      # Returns an array of all A records in the zone
+    client.records("CNAME")  # Returns an array of all CNAME records in the zone
+    client.records("AAAA")   # Returns an array of all AAAA records in the zone
+
+    ## List all possible records types:
+    client.record_types?
 
 ## Contributing
 
