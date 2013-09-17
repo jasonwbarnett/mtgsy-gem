@@ -84,9 +84,7 @@ module Mtgsy
 
         p post_data if @debug
 
-        @agent.post(@api_endpoint, [
-          post_data
-        ])
+        @agent.post(@api_endpoint, post_data)
       end
 
       def what_happened?(mechanize_instance, command)
