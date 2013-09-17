@@ -18,8 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
-client = Mtgsy::ApiClient.new(username: "my_username", password: "my_password", domainname: "mydomain.com")
-client.add_record(name: "www", type: "A", data: "127.0.0.1", aux: "0", ttl: "3600")
+    client = Mtgsy::ApiClient.new(username: "my_username", password: "my_password", domainname: "mydomain.com")
+    client.add_record(name: "www", type: "A", data: "127.0.0.1", aux: "0", ttl: "3600")
 
 ## Contributing
 
