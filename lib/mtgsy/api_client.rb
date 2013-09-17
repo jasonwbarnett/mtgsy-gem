@@ -61,6 +61,8 @@ module Mtgsy
 
     private
       def post_to_mtgsy(params)
+        post_data = []
+
         command = params[Mtgsy::COMMAND]
         name    = params[Mtgsy::NAME]
         type    = params[Mtgsy::TYPE]
@@ -68,16 +70,18 @@ module Mtgsy
         aux     = params[Mtgsy::AUX]
         data    = params[Mtgsy::TTL]
 
+        post_data << [ 'command'    ,command ]     if command
+        post_data << [ 'username'   ,@username ]   if @username
+        post_data << [ 'password'   ,@password ]   if @password
+        post_data << [ 'domainname' ,@domainname ] if @domainname
+        post_data << [ 'name'       ,name ]        if name
+        post_data << [ 'type'       ,type ]        if type
+        post_data << [ 'data'       ,data ]        if data
+        post_data << [ 'aux'        ,aux ]         if aux
+        post_data << [ 'ttl'        ,ttl ]         if ttl
+
         @agent.post(@api_endpoint, [
-          [ 'command'    ,command     ],
-          [ 'username'   ,@username   ],
-          [ 'password'   ,@password   ],
-          [ 'domainname' ,@domainname ],
-          [ 'name'       ,name        ],
-          [ 'type'       ,type        ],
-          [ 'data'       ,data        ],
-          [ 'aux'        ,aux         ],
-          [ 'ttl'        ,ttl         ]
+          post_data
         ])
       end
 
@@ -92,17 +96,17 @@ module Mtgsy
             puts "Created"
           end
         when 400
-          puts "No domain name specified"
+          $stderr.puts "No domain name specified"
         when 100
-          puts "Balance insufficcient"
+          $stderr.puts "Balance insufficcient"
         when 300
-          puts "Invalid login information supplied"
+          $stderr.puts "Invalid login information supplied"
         when 305
-          puts "Domain not found"
+          $stderr.puts "Domain not found"
         when 310
-          puts "Record not found / problem adding record"
+          $stderr.puts "Record not found / problem adding record"
         when 200
-          puts "Insufficcient information supplied"
+          $stderr.puts "Insufficcient information supplied"
         end
 
       end
