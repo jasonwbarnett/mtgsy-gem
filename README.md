@@ -19,6 +19,7 @@ Or install it yourself as:
 ## Usage
 
     ## Start things off...
+    require 'mtgsy'
     client = Mtgsy::ApiClient.new(username: "my_username", password: "my_password", domainname: "mydomain.com")
 
     ## Add records
