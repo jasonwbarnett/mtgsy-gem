@@ -81,7 +81,7 @@ module Mtgsy
     end
 
     def records(type="ALL")
-      self.refresh! unless @records
+      self.refresh! unless @records_ALL
 
       eval("@records_#{type}")
     end
