@@ -66,13 +66,24 @@ module Mtgsy
       command = "listrecords"
       post_to_mtgsy([ command ])
 
-      @records = @agent.page.body.split('<br>')
-      @records.pop
-      @records.collect { |i| i.split(",") }
+      @records_ALL = @agent.page.body.split('<br>')
+      @records_ALL.pop
+      @records_ALL.collect { |i| i.split(",") }
+
+
+      @record_types.each do |x|
+        tmp_placeholder = []
+        @records_ALL.each do |record|
+          tmp_placeholder << record if record[RECORD_TYPE] == x
+        end
+        instance_variable_set("@records_#{x}", tmp_placeholder)
+      end
     end
 
-    def records
-      @records || self.refresh!
+    def records(type="ALL")
+      self.refresh! unless @records
+
+      send "#{@records}_#{type}"
     end
 
     def record_types?
@@ -81,12 +92,12 @@ module Mtgsy
 
     private
       def post_to_mtgsy(params)
-        command = params[Mtgsy::COMMAND]
-        name    = params[Mtgsy::NAME]
-        type    = params[Mtgsy::TYPE]
-        data    = params[Mtgsy::DATA]
-        aux     = params[Mtgsy::AUX]
-        data    = params[Mtgsy::TTL]
+        command = params[Mtgsy::POST_COMMAND]
+        name    = params[Mtgsy::POST_NAME]
+        type    = params[Mtgsy::POST_TYPE]
+        data    = params[Mtgsy::POST_DATA]
+        aux     = params[Mtgsy::POST_AUX]
+        data    = params[Mtgsy::POST_TTL]
 
         post_data = []
         post_data << [ 'command'    ,command ]     if command
