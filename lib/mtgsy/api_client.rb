@@ -83,7 +83,7 @@ module Mtgsy
     def records(type="ALL")
       self.refresh! unless @records
 
-      send "#{@records}_#{type}"
+      puts eval("@records_#{type}")
     end
 
     def record_types?
