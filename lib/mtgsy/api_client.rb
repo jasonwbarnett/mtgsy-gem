@@ -1,5 +1,5 @@
 require 'mechanize'
-require 'ipaddress'
+#require 'ipaddress'
 
 module Mtgsy
   class ApiClient
