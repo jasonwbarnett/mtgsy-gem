@@ -62,6 +62,11 @@ module Mtgsy
       what_happened?(@agent, command)
     end
 
+    alias :add    :add_record
+    alias :delete :delete_record
+    alias :update :update_record
+
+
     def refresh!
       command = "listrecords"
       post_to_mtgsy([ command ])
