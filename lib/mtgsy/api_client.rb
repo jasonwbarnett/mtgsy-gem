@@ -8,13 +8,14 @@ module Mtgsy
       @api_endpoint = "https://www.mtgsy.net/dns/api.php"
       @record_types = [ 'A', 'AAAA', 'CNAME', 'HINFO', 'MX', 'NS', 'PTR', 'RP', 'SRV', 'TXT' ]
 
-      @debug        = options[:debug] ? options[:debug] : false
+      @debug        = options[:debug]      ? options[:debug]      : false
 
+      ## these are for setting up global defaults. they can be overridden though
       # attr_accessor
-      @domainname = options[:domainname] ? options[:domainname] : nil
-      @username   = options[:username]   ? options[:username]   : nil
-      @ttl        = options[:ttl]        ? options[:ttl]        : 900
-      @aux = 0
+      @domainname   = options[:domainname] ? options[:domainname] : nil
+      @username     = options[:username]   ? options[:username]   : nil
+      @aux          = options[:aux]        ? options[:aux]        : 0
+      @ttl          = options[:ttl]        ? options[:ttl]        : 900
 
       # attr_writer
       @password     = options[:password]   ? options[:password]   : nil
@@ -65,7 +66,6 @@ module Mtgsy
     alias :add    :add_record
     alias :delete :delete_record
     alias :update :update_record
-
 
     def refresh!
       command = "listrecords"
@@ -123,6 +123,7 @@ module Mtgsy
         @agent.post(@api_endpoint, post_data)
       end
 
+      ## I included `command` just in case one day the responses are different depending on the command used
       def what_happened?(mechanize_instance, command)
         mtgsy_return_code = mechanize_instance.page.body.match(/[0-9]+/)[0].to_i
 
