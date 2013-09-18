@@ -103,14 +103,14 @@ module Mtgsy
       aux     = options[:aux ] ? options[:aux].to_s  : nil
       ttl     = options[:ttl ] ? options[:ttl].to_s  : nil
 
-      if [name, type, data, aux, ttl].find { |x| x != nil }
+      unless [name, type, data, aux, ttl].find { |x| x != nil }
         $stderr.puts "You must specify at least one of the following: name, type, data, aux or ttl"
         return
       end
 
       search_data = [ name, type, data, aux, ttl ]
 
-      num_of_elements = 0
+      num_of_search_elements = 0
       0.upto(4) do |x|
         unless search_data[x] == nil
           num_of_search_elements += 1
