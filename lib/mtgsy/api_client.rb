@@ -141,7 +141,7 @@ module Mtgsy
         type    = params[Mtgsy::POST_TYPE]
         data    = params[Mtgsy::POST_DATA]
         aux     = params[Mtgsy::POST_AUX]
-        data    = params[Mtgsy::POST_TTL]
+        ttl     = params[Mtgsy::POST_TTL]
 
         post_data = []
         post_data << [ 'command'    ,command ]     if command

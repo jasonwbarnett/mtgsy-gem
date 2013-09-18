@@ -1,3 +1,8 @@
+=== 0.2.2
+
+* Bugfixes
+  * Fixed major bug with adding records. data was being overwritten with ttl.
+
 === 0.2.1
 
 * Now shipping with CHANGELOG.rdoc
