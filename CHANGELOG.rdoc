@@ -1,7 +1,7 @@
 === 0.2.0
 
 * New Features
-	* Added a search method
+  * Added a search method
 
 === 0.1.1
 
