@@ -94,6 +94,42 @@ module Mtgsy
       eval("@records_#{type}")
     end
 
+    def search(options={})
+      self.refresh! unless @records_ALL
+
+      name    = options[:name] ? options[:name].to_s : nil
+      type    = options[:type] ? options[:type].to_s : nil
+      data    = options[:data] ? options[:data].to_s : nil
+      aux     = options[:aux ] ? options[:aux].to_s  : nil
+      ttl     = options[:ttl ] ? options[:ttl].to_s  : nil
+
+      if [name, type, data, aux, ttl].find { |x| x != nil }
+        $stderr.puts "You must specify at least one of the following: name, type, data, aux or ttl"
+        return
+      end
+
+      search_data = [ name, type, data, aux, ttl ]
+
+      num_of_elements = 0
+      0.upto(4) do |x|
+        unless search_data[x] == nil
+          num_of_search_elements += 1
+        end
+      end
+
+      results = @records_ALL.select do |x|
+        matched = 0
+        ( matched += 1 if x[Mtgsy::RECORD_NAME] == search_data[Mtgsy::RECORD_NAME] ) if search_data[Mtgsy::RECORD_NAME]
+        ( matched += 1 if x[Mtgsy::RECORD_TYPE] == search_data[Mtgsy::RECORD_TYPE] ) if search_data[Mtgsy::RECORD_TYPE]
+        ( matched += 1 if x[Mtgsy::RECORD_DATA] == search_data[Mtgsy::RECORD_DATA] ) if search_data[Mtgsy::RECORD_DATA]
+        ( matched += 1 if x[Mtgsy::RECORD_AUX]  == search_data[Mtgsy::RECORD_AUX]  ) if search_data[Mtgsy::RECORD_AUX]
+        ( matched += 1 if x[Mtgsy::RECORD_TTL]  == search_data[Mtgsy::RECORD_TTL]  ) if search_data[Mtgsy::RECORD_TTL]
+        true if matched == num_of_search_elements
+      end
+
+      results
+    end
+
     def record_types?
       @record_types
     end
