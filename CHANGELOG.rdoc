@@ -1,0 +1,20 @@
+=== 0.2.0
+
+* New Features
+	* Added a search method
+
+=== 0.1.1
+
+* I don't remember what was changed, probably a handful of fixes.
+
+=== 0.1.0
+
+* First release that was actually useful and had a handful of features:
+  * add_record, alias: add
+  * delete_record, alias: delete
+  * update_record, alias: update
+
+
+=== 0.0.1
+
+*Initial realease. Mainly had place holders with little to no real functionality.
