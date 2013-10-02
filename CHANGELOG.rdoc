@@ -1,3 +1,9 @@
+=== 0.3.1
+
+* Bugfixes
+	* Added an exception when no domain name is given so the user actually knows
+	what's up. Before it looked like a random code error.
+
 === 0.3.0
 
 * New Features

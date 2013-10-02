@@ -41,6 +41,13 @@ Or install it yourself as:
     client.records("CNAME")  # Returns an array of all CNAME records in the zone
     client.records("AAAA")   # Returns an array of all AAAA records in the zone
 
+    ## Search records by name, data, type, aux, ttl. You can search using one or many:
+    client.search(name: "myrecord")                    # Returns all records whose name matches __exactly__.
+    client.search(data: "123.123.123.123")             # Returns all records whose data matches __exactly__.
+    client.search(type: "A")                           # Returns all A records.
+    client.search(type: "A", data: "123.123.123.123")  # Returns all A records whose data also matches __exactly__.
+    client.search(ttl: 900)                            # Returns all records whose ttl is 900.
+
     ## List all possible records types:
     client.record_types?
 

@@ -32,9 +32,7 @@ module Mtgsy
       aux     = options[:aux ] ? options[:aux].to_s  : @aux.to_s
       ttl     = options[:ttl ] ? options[:ttl].to_s  : @ttl.to_s
 
-      post_to_mtgsy([ command, name, type, data, aux, ttl ])
-
-      what_happened?(@agent, command)
+      post_wrapper([ command, name, type, data, aux, ttl ], @agent, command)
     end
 
     def delete_record(options={})
@@ -45,9 +43,7 @@ module Mtgsy
       aux     = options[:aux ] ? options[:aux].to_s  : nil
       ttl     = options[:ttl ] ? options[:ttl].to_s  : nil
 
-      post_to_mtgsy([ command, name, type, data, aux, ttl ])
-
-      what_happened?(@agent, command)
+      post_wrapper([ command, name, type, data, aux, ttl ], @agent, command)
     end
 
     def update_record(options={})
@@ -58,9 +54,7 @@ module Mtgsy
       aux     = options[:aux ] ? options[:aux].to_s  : nil
       ttl     = options[:ttl ] ? options[:ttl].to_s  : nil
 
-      post_to_mtgsy([ command, name, type, data, aux, ttl ])
-
-      what_happened?(@agent, command)
+      post_wrapper([ command, name, type, data, aux, ttl ], @agent, command)
     end
 
     alias :add    :add_record
@@ -127,7 +121,20 @@ module Mtgsy
     end
 
     private
+      def post_wrapper(data, agent, command)
+        begin
+          post_to_mtgsy(data)
+        rescue RuntimeError => e
+          puts e.message
+        else
+          what_happened?(agent, command)
+        end
+      end
+
+
       def post_to_mtgsy(params)
+        raise "ERROR: Domain name is required." unless @domainname
+
         command = params[Mtgsy::POST_COMMAND]
         name    = params[Mtgsy::POST_NAME]
         type    = params[Mtgsy::POST_TYPE]
@@ -167,7 +174,12 @@ module Mtgsy
         when 305
           $stderr.puts "Domain not found"
         when 310
-          $stderr.puts "Record not found / problem adding record"
+          case command
+          when "deleterecord"
+            $stderr.puts "Record not found"
+          else
+            $stderr.puts "Record not found / problem adding record"
+          end
         when 200
           $stderr.puts "Insufficcient information supplied"
         end
