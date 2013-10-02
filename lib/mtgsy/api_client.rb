@@ -110,21 +110,13 @@ module Mtgsy
 
       search_data = [ name, type, data, aux, ttl ]
 
-      num_of_search_elements = 0
-      0.upto(4) do |x|
-        unless search_data[x] == nil
-          num_of_search_elements += 1
-        end
-      end
-
       results = @records_ALL.select do |x|
-        matched = 0
-        ( matched += 1 if x[Mtgsy::RECORD_NAME] == search_data[Mtgsy::RECORD_NAME] ) if search_data[Mtgsy::RECORD_NAME]
-        ( matched += 1 if x[Mtgsy::RECORD_TYPE] == search_data[Mtgsy::RECORD_TYPE] ) if search_data[Mtgsy::RECORD_TYPE]
-        ( matched += 1 if x[Mtgsy::RECORD_DATA] == search_data[Mtgsy::RECORD_DATA] ) if search_data[Mtgsy::RECORD_DATA]
-        ( matched += 1 if x[Mtgsy::RECORD_AUX]  == search_data[Mtgsy::RECORD_AUX]  ) if search_data[Mtgsy::RECORD_AUX]
-        ( matched += 1 if x[Mtgsy::RECORD_TTL]  == search_data[Mtgsy::RECORD_TTL]  ) if search_data[Mtgsy::RECORD_TTL]
-        true if matched == num_of_search_elements
+        ( return false unless x[Mtgsy::RECORD_NAME] == search_data[Mtgsy::RECORD_NAME] ) if search_data[Mtgsy::RECORD_NAME]
+        ( return false unless x[Mtgsy::RECORD_TYPE] == search_data[Mtgsy::RECORD_TYPE] ) if search_data[Mtgsy::RECORD_TYPE]
+        ( return false unless x[Mtgsy::RECORD_DATA] == search_data[Mtgsy::RECORD_DATA] ) if search_data[Mtgsy::RECORD_DATA]
+        ( return false unless x[Mtgsy::RECORD_AUX]  == search_data[Mtgsy::RECORD_AUX]  ) if search_data[Mtgsy::RECORD_AUX]
+        ( return false unless x[Mtgsy::RECORD_TTL]  == search_data[Mtgsy::RECORD_TTL]  ) if search_data[Mtgsy::RECORD_TTL]
+        true
       end
 
       results
